@@ -10,7 +10,7 @@ jobs:
     # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
     - run: choco install cmake --version=3.17.5
     - run: cmake --version
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC_LIBS=OFF
     - run: cmake --build build --config Release
     - uses: actions/upload-artifact@v2
       with:
