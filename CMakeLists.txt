@@ -203,7 +203,7 @@ if(MSVC)
     set(EXAMPLE_CFLAGS "/W4")
     set(TEST_CFLAGS "${LIB_CFLAGS}")
     set(TEST_LDFLAGS " ")
-    set(LIBM " ")
+    set(LIBM "")
 else()
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Werror -pedantic")
     set(LIB_CFLAGS "-std=c11 -fvisibility=hidden -Wall -Werror=strict-prototypes -Werror=old-style-definition -Werror=missing-prototypes -D_REENTRANT -D_POSIX_C_SOURCE=200809L -Wno-missing-braces")
@@ -212,6 +212,7 @@ else()
     set(TEST_LDFLAGS "-fprofile-arcs -ftest-coverage")
     set(LIBM "m")
 endif()
+message(STATUS "0 LIB_CFLAGS: ${LIB_CFLAGS}")
 
 configure_file(
     "${libsoundio_SOURCE_DIR}/src/config.h.in"
@@ -224,6 +225,7 @@ configure_file(
 )
 
 if(BUILD_DYNAMIC_LIBS)
+    message(STATUS "1 LIB_CFLAGS: ${LIB_CFLAGS}")
     add_library(libsoundio_shared SHARED ${LIBSOUNDIO_SOURCES})
     set_target_properties(libsoundio_shared PROPERTIES
         OUTPUT_NAME soundio
@@ -237,6 +239,7 @@ if(BUILD_DYNAMIC_LIBS)
 endif()
 
 if(BUILD_STATIC_LIBS)
+    message(STATUS "2 LIB_CFLAGS: ${LIB_CFLAGS}")
     add_library(libsoundio_static STATIC ${LIBSOUNDIO_SOURCES})
     set_target_properties(libsoundio_static PROPERTIES
         OUTPUT_NAME ${SOUNDIO_STATIC_LIBNAME}
@@ -307,6 +310,7 @@ if(BUILD_TESTS)
         LINK_FLAGS ${TEST_LDFLAGS}
     )
 
+    message(STATUS "3 LIB_CFLAGS: ${LIB_CFLAGS}")
     add_executable(latency "${libsoundio_SOURCE_DIR}/test/latency.c" ${LIBSOUNDIO_SOURCES})
     target_link_libraries(latency LINK_PUBLIC ${LIBSOUNDIO_LIBS} ${LIBM})
     set_target_properties(latency PROPERTIES

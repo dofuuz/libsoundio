@@ -24,7 +24,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: msys2/setup-msys2@v2
       with:
-        install: make cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
+        install: cmake mingw-w64-x86_64-make mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
     - run: which mingw32-make
     - run: cmake -B build -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
