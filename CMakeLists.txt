@@ -231,8 +231,9 @@ if(BUILD_DYNAMIC_LIBS)
         OUTPUT_NAME soundio
         SOVERSION ${LIBSOUNDIO_VERSION_MAJOR}
         VERSION ${LIBSOUNDIO_VERSION}
+        COMPILE_FLAGS ${LIB_CFLAGS}
+        LINKER_LANGUAGE C
     )
-    target_compile_options(libsoundio_shared PRIVATE "${LIB_CFLAGS}")
     target_link_libraries(libsoundio_shared LINK_PUBLIC ${LIBSOUNDIO_LIBS})
     install(TARGETS libsoundio_shared DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
@@ -242,8 +243,9 @@ if(BUILD_STATIC_LIBS)
     add_library(libsoundio_static STATIC ${LIBSOUNDIO_SOURCES})
     set_target_properties(libsoundio_static PROPERTIES
         OUTPUT_NAME ${SOUNDIO_STATIC_LIBNAME}
+        COMPILE_FLAGS ${LIB_CFLAGS}
+        LINKER_LANGUAGE C
     )
-    target_compile_options(libsoundio_static PRIVATE "${LIB_CFLAGS}")
     install(TARGETS libsoundio_static DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
 
