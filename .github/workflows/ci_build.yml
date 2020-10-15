@@ -50,3 +50,17 @@ jobs:
         name: build-amd64_linux_gcc
         path: "*.tar.gz"
     - run: build/unit_tests
+
+  macos:
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v2
+    - run: brew install cmake
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+    - run: cmake --build build --config $BUILD_TYPE
+    - run: tar caf build.tar.gz build
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-macos
+        path: "build/*"
+    - run: build/unit_tests
