@@ -17,7 +17,7 @@ jobs:
         name: build-amd64_windows_msvc
         path: "build/*"
     # This will fail because there are no sound device on CI build machine
-    - run: build/unit_tests
+    - run: build/unit_tests.exe
 
   amd64_windows_gcc:
     runs-on: windows-2016
