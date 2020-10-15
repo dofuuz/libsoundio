@@ -21,8 +21,8 @@ jobs:
       with:
         install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake
     - run: which mingw32-make
-    - run: which cmake
-    - run: cmake -B build -G"MSYS Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+    - run: cmake --help
+    - run: cmake -B build -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     - run: cmake --build build --config $BUILD_TYPE
     - run: file build/unit_tests.exe
     - run: build/unit_tests
