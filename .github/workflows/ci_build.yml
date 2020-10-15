@@ -4,10 +4,11 @@ on: [push, pull_request]
 
 jobs:
   amd64_windows_msvc:
-    runs-on: windows-2019
+    runs-on: windows-2016
     steps:
+    - run: choco install cmake --version=3.17
     - uses: actions/checkout@v2
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSEAUDIO=OFF -DENABLE_COREAUDIO=OFF
     - run: cmake --build build --config Release --verbose
       continue-on-error: true
     - uses: actions/upload-artifact@v2
@@ -27,7 +28,7 @@ jobs:
       with:
         install: make cmake mingw-w64-x86_64-make mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc
     - run: which mingw32-make
-    - run: cmake -B build -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
+    - run: cmake -B build -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSEAUDIO=OFF -DENABLE_COREAUDIO=OFF
     - run: cmake --build build --config Release
     - uses: actions/upload-artifact@v2
       with:
@@ -39,8 +40,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - run: sudo apt install -y make gcc cmake libasound2-dev libjack-jackd2-dev libpulse-dev pkg-config
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - run: sudo apt install -y libasound2-dev libjack-jackd2-dev libpulse-dev
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_COREAUDIO=OFF
     - run: cmake --build build --config Release
     - run: tar caf build.tar.gz build
     - uses: actions/upload-artifact@v2
@@ -53,8 +54,7 @@ jobs:
     runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v2
-    - run: brew install cmake
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_PULSEAUDIO=OFF
     - run: cmake --build build --config Release
     - run: tar caf build.tar.gz build
     - uses: actions/upload-artifact@v2
