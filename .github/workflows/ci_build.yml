@@ -24,8 +24,14 @@ jobs:
     - run: cmake --help
     - run: cmake -B build -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     - run: cmake --build build --config $BUILD_TYPE
-    - run: file build/unit_tests.exe
+    - run: 7z a build.zip build\
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: zip
+        path: "*.zip"
     - run: build/unit_tests
+
   amd64_linux_gcc:
     runs-on: ubuntu-18.04
     steps:
@@ -33,5 +39,10 @@ jobs:
     - run: sudo apt install -y make gcc cmake libasound2-dev libjack-jackd2-dev libpulse-dev pkg-config
     - run: cmake -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     - run: cmake --build build --config $BUILD_TYPE
-    - run: file build/unit_tests
+    - run: tar caf build.tar.gz build
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: tar
+        path: "*.tar.gz"
     - run: build/unit_tests
