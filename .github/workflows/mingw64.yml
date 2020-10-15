@@ -19,8 +19,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: msys2/setup-msys2@v2
       with:
-        install: gcc make
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+        install: gcc ninja cmake
+    - run: cmake -B build -GNinja -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     - run: cmake --build . --config $BUILD_TYPE
     - run: file build/unit_tests.exe
     - run: build/unit_tests
