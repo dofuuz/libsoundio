@@ -232,7 +232,6 @@ if(BUILD_DYNAMIC_LIBS)
         SOVERSION ${LIBSOUNDIO_VERSION_MAJOR}
         VERSION ${LIBSOUNDIO_VERSION}
         COMPILE_FLAGS ${LIB_CFLAGS}
-        LINKER_LANGUAGE C
     )
     target_link_libraries(libsoundio_shared LINK_PUBLIC ${LIBSOUNDIO_LIBS})
     install(TARGETS libsoundio_shared DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -244,7 +243,6 @@ if(BUILD_STATIC_LIBS)
     set_target_properties(libsoundio_static PROPERTIES
         OUTPUT_NAME ${SOUNDIO_STATIC_LIBNAME}
         COMPILE_FLAGS ${LIB_CFLAGS}
-        LINKER_LANGUAGE C
     )
     install(TARGETS libsoundio_static DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
