@@ -6,11 +6,19 @@ env:
   BUILD_TYPE: Release
 
 jobs:
+  amd64_windows_msvc:
+    runs-on: windows-2016
+    steps:
+    - uses: actions/checkout@v2
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+    - run: cmake --build build --config $BUILD_TYPE
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-amd64_windows_msvc
+        path: "build/*"
+    - run: build/unit_tests
+
   amd64_windows_gcc:
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    # See: https://docs.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#configuring-a-build-matrix
     runs-on: windows-2016
     defaults:
       run:
