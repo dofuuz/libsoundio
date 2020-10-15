@@ -20,7 +20,7 @@ jobs:
     - uses: msys2/setup-msys2@v2
       with:
         install: gcc ninja cmake
-    - run: cmake -B build -GNinja -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-    - run: cmake --build . --config $BUILD_TYPE
+    - run: cmake -B build -G"MSYS Makefiles" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+    - run: cmake --build build --config $BUILD_TYPE
     - run: file build/unit_tests.exe
     - run: build/unit_tests
