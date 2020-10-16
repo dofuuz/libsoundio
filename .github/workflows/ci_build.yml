@@ -8,22 +8,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
-    - name: Cache Choco
-      id: cache-choco
-      uses: actions/cache@v2
-      with:
-        path: |
-          C:/ProgramData/chocolatey/bin
-          C:/ProgramData/chocolatey/lib
-          C:/Program Files/CMake
-        key: ${{ runner.os }}-choco
-    - run: get-command choco
-    - run: choco install cmake --version=3.17.5
-    - run: get-command cmake
+    - run: choco install cmake --version=3.17.5 -y --no-progress
     - run: cmake --version
     - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
-      continue-on-error: true
     - uses: actions/upload-artifact@v2
       with:
         name: build-amd64_windows_msvc
@@ -33,7 +21,7 @@ jobs:
         cd build/Release
         ./sio_list_devices
         ./unit_tests
-      continue-on-error: true
+      #continue-on-error: true
 
   amd64_windows_gcc:
     runs-on: windows-2016
@@ -59,7 +47,7 @@ jobs:
         cd build
         ./sio_list_devices
         ./unit_tests
-      continue-on-error: true
+      #continue-on-error: true
 
   amd64_linux_gcc:
     runs-on: ubuntu-18.04
@@ -78,7 +66,6 @@ jobs:
         cd build
         ./sio_list_devices
         ./unit_tests
-      continue-on-error: true
 
   macos:
     runs-on: macos-10.15
@@ -96,4 +83,3 @@ jobs:
         cd build
         ./sio_list_devices
         ./unit_tests
-      continue-on-error: true
