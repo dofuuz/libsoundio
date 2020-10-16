@@ -21,6 +21,7 @@ jobs:
     - run: cmake --version
     - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
+      continue-on-error: true
     - uses: actions/upload-artifact@v2
       with:
         name: build-amd64_windows_msvc
@@ -28,8 +29,8 @@ jobs:
     # This will fail because there are no sound device on CI build machine
     - run: |
         cd build/Release
-        ./unit_tests
         ./sio_list_devices
+        ./unit_tests
       continue-on-error: true
 
   amd64_windows_gcc:
@@ -54,8 +55,8 @@ jobs:
     # This will fail because there are no sound device on CI build machine
     - run: |
         cd build
-        ./unit_tests
         ./sio_list_devices
+        ./unit_tests
       continue-on-error: true
 
   amd64_linux_gcc:
@@ -73,8 +74,8 @@ jobs:
         path: "*.tar.gz"
     - run: |
         cd build
-        ./unit_tests
         ./sio_list_devices
+        ./unit_tests
       continue-on-error: true
 
   macos:
@@ -91,6 +92,6 @@ jobs:
         path: "*.tar.gz"
     - run: |
         cd build
-        ./unit_tests
         ./sio_list_devices
+        ./unit_tests
       continue-on-error: true
