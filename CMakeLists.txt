@@ -25,6 +25,9 @@ message("Configuring libsoundio version ${LIBSOUNDIO_VERSION}")
 
 if(NOT SOUNDIO_STATIC_LIBNAME)
     set(SOUNDIO_STATIC_LIBNAME soundio)
+    if(MSVC AND BUILD_DYNAMIC_LIBS)
+        set(SOUNDIO_STATIC_LIBNAME soundio-static)
+    endif()
 endif()
 
 option(BUILD_STATIC_LIBS "Build static libraries" ON)

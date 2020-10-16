@@ -8,16 +8,29 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
+    - name: Cache Choco
+      id: cache-choco
+      uses: actions/cache@v2
+      with:
+        path: |
+          C:\ProgramData\chocolatey\bin
+          C:\ProgramData\chocolatey\lib
+          C:\Program Files\CMake
+        key: ${{ runner.os }}-choco
     - run: choco install cmake --version=3.17.5
     - run: cmake --version
-    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC_LIBS=OFF
+    - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
     - uses: actions/upload-artifact@v2
       with:
         name: build-amd64_windows_msvc
         path: "build/*"
     # This will fail because there are no sound device on CI build machine
-    - run: build/unit_tests.exe
+    - run: |
+        cd build/Release
+        ./unit_tests
+        ./sio_list_devices
+      continue-on-error: true
 
   amd64_windows_gcc:
     runs-on: windows-2016
@@ -39,7 +52,11 @@ jobs:
         name: build-amd64_windows_gcc
         path: "build/*"
     # This will fail because there are no sound device on CI build machine
-    - run: build/unit_tests
+    - run: |
+        cd build
+        ./unit_tests
+        ./sio_list_devices
+      continue-on-error: true
 
   amd64_linux_gcc:
     runs-on: ubuntu-18.04
@@ -54,7 +71,11 @@ jobs:
       with:
         name: build-amd64_linux_gcc
         path: "*.tar.gz"
-    - run: build/unit_tests
+    - run: |
+        cd build
+        ./unit_tests
+        ./sio_list_devices
+      continue-on-error: true
 
   macos:
     runs-on: macos-10.15
@@ -68,4 +89,8 @@ jobs:
       with:
         name: build-macos
         path: "*.tar.gz"
-    - run: build/unit_tests
+    - run: |
+        cd build
+        ./unit_tests
+        ./sio_list_devices
+      continue-on-error: true
