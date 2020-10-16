@@ -16,8 +16,10 @@ jobs:
       with:
         name: build-amd64_windows_msvc
         path: "build/*"
+    - run: net start Audiosrv
     # This will fail because there are no sound device on CI build machine
-    - run: |
+    - name: Run tests
+      run: |
         cd build/Release
         ./sio_list_devices
         ./unit_tests
@@ -42,8 +44,10 @@ jobs:
       with:
         name: build-amd64_windows_gcc
         path: "build/*"
+    - run: net start Audiosrv
     # This will fail because there are no sound device on CI build machine
-    - run: |
+    - name: Run tests
+      run: |
         cd build
         ./sio_list_devices
         ./unit_tests
@@ -62,7 +66,8 @@ jobs:
       with:
         name: build-amd64_linux_gcc
         path: "*.tar.gz"
-    - run: |
+    - name: Run tests
+      run: |
         cd build
         ./sio_list_devices
         ./unit_tests
@@ -79,7 +84,8 @@ jobs:
       with:
         name: build-macos
         path: "*.tar.gz"
-    - run: |
+    - name: Run tests
+      run: |
         cd build
         ./sio_list_devices
         ./unit_tests
