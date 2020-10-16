@@ -218,11 +218,11 @@ struct Test {
 
 static struct Test tests[] = {
     {"os_get_time", test_os_get_time},
-    {"create output stream", test_create_outstream},
     {"mirrored memory", test_mirrored_memory},
     {"soundio_device_nearest_sample_rate", test_nearest_sample_rate},
     {"ring buffer basic", test_ring_buffer_basic},
     {"ring buffer threaded", test_ring_buffer_threaded},
+    {"create output stream", test_create_outstream},
     {NULL, NULL},
 };
 
