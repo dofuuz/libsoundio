@@ -17,6 +17,7 @@ jobs:
           C:\ProgramData\chocolatey\lib
           C:\Program Files\CMake
         key: ${{ runner.os }}-choco
+    - run: get-command choco
     - run: choco install cmake --version=3.17.5
     - run: cmake --version
     - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
