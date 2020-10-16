@@ -13,12 +13,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          C:\ProgramData\chocolatey\bin
-          C:\ProgramData\chocolatey\lib
-          C:\Program Files\CMake
+          C:/ProgramData/chocolatey/bin
+          C:/ProgramData/chocolatey/lib
+          C:/Program Files/CMake
         key: ${{ runner.os }}-choco
     - run: get-command choco
     - run: choco install cmake --version=3.17.5
+    - run: get-command cmake
     - run: cmake --version
     - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
