@@ -15,6 +15,7 @@ jobs:
     # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
     - run: choco install cmake --version=3.17.5 -y --no-progress
     - run: choco install vb-cable -y --no-progress
+    - run: certutil -addstore "TrustedPublisher" .github\workflows\vincent_burel.cer
     - run: pnputil -i -a C:\ProgramData\chocolatey\lib\vb-cable\tools\vbMmeCable64_win7.inf
     - run: cmake --version
     - run: cmake -B build -A ${{matrix.platform}} -DCMAKE_BUILD_TYPE=Release
