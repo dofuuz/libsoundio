@@ -45,6 +45,7 @@ static int prioritized_sample_rates[] = {
     0,
 };
 
+
 #ifdef __GNUC__
 __attribute__ ((cold))
 __attribute__ ((noreturn))

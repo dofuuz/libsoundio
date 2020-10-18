@@ -22,6 +22,7 @@
 #include <unistd.h>
 #endif
 
+
 static enum SoundIoFormat prioritized_formats[] = {
     SoundIoFormatFloat32NE,
     SoundIoFormatFloat32FE,
@@ -43,7 +44,6 @@ static enum SoundIoFormat prioritized_formats[] = {
     SoundIoFormatU8,
     SoundIoFormatInvalid,
 };
-
 
 __attribute__ ((cold))
 __attribute__ ((noreturn))
