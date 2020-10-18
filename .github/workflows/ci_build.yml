@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build-win-msvc:
-    name: Windows ${{ matrix.toolchain.compiler }} ${{matrix.target.arch}}
+    name: Windows ${{ matrix.target.arch }} ${{ matrix.toolchain.compiler }}
     runs-on: ${{ matrix.toolchain.os }}
     strategy:
       fail-fast: false
@@ -39,7 +39,7 @@ jobs:
     # Upload artifact
     - uses: actions/upload-artifact@v2
       with:
-        name: libsoundio-${{ env.GIT_TAG }}-windows-${{ matrix.target.arch }}
+        name: libsoundio-${{ env.GIT_TAG }}-Windows-${{ matrix.target.arch }}-${{ matrix.toolchain.compiler }}
         path: "build/*"
 
     # Test
@@ -50,7 +50,7 @@ jobs:
         ./sio_list_devices
 
   build-win-mingw:
-    name: Windows MinGW x64
+    name: Windows x64 MinGW
     runs-on: windows-2016
     defaults:
       run:
@@ -78,7 +78,7 @@ jobs:
     # Upload artifact
     - uses: actions/upload-artifact@v2
       with:
-        name: libsoundio-${{ env.GIT_TAG }}-mingw64
+        name: libsoundio-${{ env.GIT_TAG }}-MinGW64
         path: "build/*"
 
     # Test
@@ -110,7 +110,7 @@ jobs:
     - run: tar cf build.tar build
     - uses: actions/upload-artifact@v2
       with:
-        name: libsoundio-${{ env.GIT_TAG }}-ubuntu
+        name: libsoundio-${{ env.GIT_TAG }}-Ubuntu
         path: "*.tar"
 
     # Test
@@ -139,7 +139,7 @@ jobs:
     - run: tar cf build.tar build
     - uses: actions/upload-artifact@v2
       with:
-        name: libsoundio-${{ env.GIT_TAG }}-macos
+        name: libsoundio-${{ env.GIT_TAG }}-macOS
         path: "*.tar"
 
     # Test
