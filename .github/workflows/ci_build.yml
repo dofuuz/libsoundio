@@ -3,7 +3,7 @@ name: CI Build
 on: [push, pull_request]
 
 jobs:
-  build-msvc:
+  build-win-msvc:
     name: Windows VS ${{ matrix.os }} ${{matrix.platform}}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -13,6 +13,11 @@ jobs:
         platform: [Win32, x64]
     steps:
     - uses: actions/checkout@v2
+    - name: Get version tag
+      run: |
+        git_tag=$(git describe --always --tags --dirty)
+        echo "GIT_TAG=${git_tag}" >> ${GITHUB_ENV}
+      shell: bash
 
     # Install dependencies
     # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
@@ -28,7 +33,7 @@ jobs:
     # Upload artifact
     - uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.os }}-${{ matrix.platform }}
+        name: libsoundio-${{ env.GIT_TAG }}-windows-${{ matrix.platform }}
         path: "build/*"
 
     # Test
@@ -38,7 +43,7 @@ jobs:
         ./unit_tests
         ./sio_list_devices
 
-  build-mingw:
+  build-win-mingw:
     name: Windows MinGW x64
     runs-on: windows-2016
     defaults:
@@ -46,6 +51,10 @@ jobs:
         shell: msys2 {0}
     steps:
     - uses: actions/checkout@v2
+    - name: Get version tag
+      run: |
+        git_tag=$(git describe --always --tags --dirty)
+        echo "GIT_TAG=${git_tag}" >> ${GITHUB_ENV}
 
     # Install dependencies
     - uses: msys2/setup-msys2@v2
@@ -62,7 +71,7 @@ jobs:
     # Upload artifact
     - uses: actions/upload-artifact@v2
       with:
-        name: windows-mingw64-${{ env.SHORTHASH }}
+        name: libsoundio-${{ env.GIT_TAG }}-mingw64
         path: "build/*"
 
     # Test
@@ -77,6 +86,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
+    - name: Get version tag
+      run: |
+        git_tag=$(git describe --always --tags --dirty)
+        echo "GIT_TAG=${git_tag}" >> ${GITHUB_ENV}
 
     # Install dependencies
     - run: sudo apt install -y libasound2-dev libjack-jackd2-dev libpulse-dev
@@ -85,11 +98,15 @@ jobs:
     - run: cmake --version
     - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
+
+    # Upload artifact
     - run: tar cf build.tar build
     - uses: actions/upload-artifact@v2
       with:
-        name: ubuntu-gcc-${{ env.SHORTHASH }}
+        name: libsoundio-${{ env.GIT_TAG }}-ubuntu
         path: "*.tar"
+
+    # Test
     - name: Run tests
       run: |
         cd build
@@ -111,7 +128,7 @@ jobs:
     - run: tar cf build.tar build
     - uses: actions/upload-artifact@v2
       with:
-        name: macos-clang-${{ env.SHORTHASH }}
+        name: libsoundio-${{ env.GIT_TAG }}-macos
         path: "*.tar"
 
     # Test
