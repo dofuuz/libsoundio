@@ -12,11 +12,13 @@ jobs:
         platform: [Win32, x64]
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: %TEMP%\chocolatey
+        key: ${{ runner.os }}-choco
     # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
     - run: choco install cmake --version=3.17.5 -y --no-progress
-    #- run: certutil -addstore "TrustedPublisher" .github\workflows\vincent_burel.cer
     - run: choco install voicemeeter -y --no-progress
-    #- run: pnputil -i -a C:\ProgramData\chocolatey\lib\vb-cable\tools\vbMmeCable64_win7.inf
     - run: cmake --version
     - run: cmake -B build -A ${{matrix.platform}} -DCMAKE_BUILD_TYPE=Release
     - run: cmake --build build --config Release
@@ -24,13 +26,12 @@ jobs:
       with:
         name: ${{ matrix.os }}-${{ matrix.platform }}
         path: "build/*"
-    # This will fail because there are no sound device on CI build machine
+    - run: choco install voicemeeter -y --no-progress
     - name: Run tests
       run: |
         cd build/Release
-        ./sio_list_devices
         ./unit_tests
-      continue-on-error: true
+        ./sio_list_devices
 
   amd64_windows_gcc:
     runs-on: windows-2016
@@ -39,6 +40,10 @@ jobs:
         shell: msys2 {0}
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: %TEMP%\chocolatey
+        key: ${{ runner.os }}-choco
     - uses: msys2/setup-msys2@v2
       with:
         install: make cmake mingw-w64-x86_64-make mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc
@@ -51,14 +56,12 @@ jobs:
       with:
         name: build-amd64_windows_gcc
         path: "build/*"
-    - run: net start Audiosrv
-    # This will fail because there are no sound device on CI build machine
+    - run: choco install voicemeeter -y --no-progress
     - name: Run tests
       run: |
         cd build
-        ./sio_list_devices
         ./unit_tests
-      continue-on-error: true
+        ./sio_list_devices
 
   amd64_linux_gcc:
     runs-on: ubuntu-18.04
@@ -76,8 +79,8 @@ jobs:
     - name: Run tests
       run: |
         cd build
-        ./sio_list_devices
         ./unit_tests
+        ./sio_list_devices
 
   macos:
     runs-on: macos-10.15
@@ -94,5 +97,5 @@ jobs:
     - name: Run tests
       run: |
         cd build
-        ./sio_list_devices
         ./unit_tests
+        ./sio_list_devices
