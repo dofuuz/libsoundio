@@ -43,7 +43,7 @@ jobs:
     - uses: actions/cache@v2
       with:
         path: "%TEMP%/chocolatey"
-        key: ${{ runner.os }}-choco
+        key: ${{ runner.os }}-msys2-choco
     - uses: msys2/setup-msys2@v2
       with:
         install: make cmake mingw-w64-x86_64-make mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc
@@ -57,6 +57,7 @@ jobs:
         name: build-amd64_windows_gcc
         path: "build/*"
     - run: choco install voicemeeter -y --no-progress
+      shell: powershell
     - name: Run tests
       run: |
         cd build
