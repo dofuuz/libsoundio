@@ -26,8 +26,6 @@ jobs:
       shell: bash
 
     # Install dependencies
-    # libsoundio can't build with CMake 3.18 https://github.com/microsoft/Azure-Kinect-Sensor-SDK/issues/1363
-    - run: choco install cmake --version=3.17.5 -y --no-progress
     # Install virtual audio device (Test will fail without this, because there are no sound device on CI build machine)
     - run: choco install voicemeeter -y --no-progress
 
